@@ -8,7 +8,7 @@ app = Flask(__name__)
 @app.route('/video', methods=["GET",])
 def getVideo():
 	vid= request.args['vid']
-
+	
 	video = VideoStat(vid)
 	data = video.extract()
 	#print(data)
