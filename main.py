@@ -1,24 +1,27 @@
 from flask import Flask, render_template
 from flask import request
-from sandworks_yt_crawling import VideoStat
+from sandworks_yt_crawling import Comment
 
 app = Flask(__name__)
 
 
 @app.route('/video', methods=["GET",])
-def getVideo():
+def getComments():
 	vid= request.args['vid']
+	limit=  request.args['limit']
 
-	video = VideoStat(vid)
-	data = video.extract()
+	comment = Comment(vid, limit)
+	response = comment.extract()
+
+	lists = comment.commentList
+
 	#print(data)
 	
-	videoInfo = video.videoInfo
-	if videoInfo == None:
+	if lists == []:
 		return render_template("page_not_found.html"), 404
-	#print(videoInfo)
 	
-	return videoInfo
+	
+	return str(lists)
 
 
 if __name__ == "__main__":
